@@ -2,13 +2,23 @@
 
 
 
-DELETE
-FROM person
-WHERE id NOT IN(
-SELECT sub.min_id
-FROM (SELECT email, MIN(id) AS min_id
-FROM person
-GROUP BY email) sub)
+
+# DELETE
+# FROM person
+# WHERE id IN(
+# SELECT sub.id
+# FROM (
+#  SELECT id, COUNT(email)
+# FROM person
+# GROUP BY id, email
+# HAVING COUNT(email) > 1
+# ORDER BY id DESC
+# LIMIT 1) sub)
+
+DELETE p1
+FROM person p1
+    INNER JOIN person p2 ON p1.email = p2.email
+WHERE p1.id > p2.id
 
 
 
